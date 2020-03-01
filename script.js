@@ -1,5 +1,6 @@
 // header.innerHTML = "<input type="text" placeholder="What needs to be done?">";
-
+// TODO: 1. You have to wrap everything in single function, say "createTodoList" and create all other methods inside it. After you done you have to be able to initiate your app something like this - createTodoList('wrapper'). And that's it.
+// TODO: 2. You have to create your data object inside "createTodoList" where you will store all app data, so it's visible throughout your app. Think about it structure and what will be there
 let wrapper = document.querySelector('.wrapper');
 
 function createHeader() {
