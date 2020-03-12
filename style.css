@@ -47,6 +47,76 @@ input::placeholder {
     font-size: 20px;
 }
 
+.todo_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 610px;
+    padding: 10px;
+    color: #7777A1;
+    background-color: #fff;
+    border-top: 1px solid #E6E6E7;
+    box-shadow: 2px 2px 5px #D5D5D5;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox] + label:before {
+    content: "\2714";
+    color: transparent;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 22px;
+    margin: -5px 5px 0 0;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    vertical-align: middle;
+    transition: color ease .3s;
+}
+
+input[type=checkbox]:checked + label:before {
+    color: #5DC2AF;
+    border-color: #5DC2AF;
+}
+
+.todo_item p {
+    width: 85%;
+    font-size: 18px;
+    text-align: left;
+}
+
+.delete_item {
+    position: relative;
+    width: 20px;
+    height: 15px;
+}
+
+.delete_item:hover:before, .delete_item:hover:after {
+    display: block;
+}
+
+.delete_item:before, .delete_item:after {
+    content: ' ';
+    display: none;
+    position: absolute;
+    top: 0;
+    height: 15px;
+    width: 3px;
+    background-color: rgb(112, 11, 11);
+    }
+.delete_item:before {
+    transform: rotate(45deg);
+    }
+.delete_item:after {
+    transform: rotate(-45deg);
+    }
+
 .footer {
     display: flex;
     justify-content: space-between;
@@ -78,3 +148,5 @@ button {
 button:active {
     border: 1px solid #EFD5D5;
 }
+
+
