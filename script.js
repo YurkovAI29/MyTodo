@@ -1,14 +1,15 @@
 function createTodoList(classBlock) {
 
-    wrapper = document.querySelector(classBlock); 
-    let todoListFragment = document.createDocumentFragment();
+    let wrapper = document.querySelector(classBlock); 
+    
 
     let data = {
-        todos: [{
+        todos: [
+            {
             isActive: false,
             title: "buy milk"
             },
-            {
+            { 
             isActive: true,
             title: "buy bread"  
             },
@@ -31,25 +32,40 @@ function createTodoList(classBlock) {
         let arrow = document.createElement('div');
         let inputMain = document.createElement('input');
         
-        main.classList = 'content';
-        arrow.classList = 'arrow';
+        main.className = 'content';
+        arrow.className = 'arrow';
 
         inputMain.placeholder = ('What needs to be done?');
+        inputMain.addEventListener('keydown', (enterKey) => {
+            if (enterKey.keyCode === 13) {
+                console.log(inputMain.value);
+                data.todos.push({
+                    isActive: false,
+                    title: inputMain.value
+                });
+                console.log(inputMain.value);
+                console.log(data.todos);
+                data.todos.map(createdTodos);
+                inputMain.value = '';
+            }
+            return;
+        });
 
         main.append(arrow);
         main.append(inputMain);
         return main;
     }
 
-    let todos = data.todos.map((item) => {
+    function createdSingleTodo(item) {
+       
         let todoItemDiv = document.createElement('div');
         let todoItemInput = document.createElement('input');
         let todoItemLabel = document.createElement('label');
         let todoItemText = document.createElement('p');
         let todoItemButton = document.createElement('button');
 
-        todoItemDiv.classList = 'todo_item';
-        todoItemButton.classList = 'delete_item';
+        todoItemDiv.className = 'todo_item';
+        todoItemButton.className = 'delete_item';
         todoItemInput.id = 'todo_item';
 
         todoItemLabel.setAttribute('for', 'todo_item');
@@ -61,11 +77,18 @@ function createTodoList(classBlock) {
         todoItemDiv.append(todoItemInput);
         todoItemDiv.append(todoItemLabel);
         todoItemDiv.append(todoItemText);
-        todoListFragment.appendChild(todoItemDiv);
         todoItemDiv.append(todoItemButton);
 
         return todoItemDiv;
-    });
+    }
+
+    function createdAllTodos(todos) {
+        let list = document.createElement('div');
+
+        todos.forEach(item => list.append(createdSingleTodo(item)));
+
+        return list;
+    }
     
     function createFooter() {
         let footer = document.createElement('footer');
@@ -79,10 +102,10 @@ function createTodoList(classBlock) {
         let clear = document.createElement('div');
         let link = document.createElement('a');
 
-        footer.classList = 'footer';
-        counter.classList = 'counter';
-        counterItem.classList = 'counter-item';
-        buttons.classList = 'buttons';
+        footer.className = 'footer';
+        counter.className = 'counter';
+        counterItem.className = 'counter-item';
+        buttons.className = 'buttons';
         clear.classList = 'clear';
 
         counterItem.innerText = data.todos.forEach((item) => {
@@ -115,7 +138,7 @@ function createTodoList(classBlock) {
 
     wrapper.append(createHeader());
     wrapper.append(createMain());
-    wrapper.append(todoListFragment);
+    wrapper.append(createdAllTodos(data.todos));
     wrapper.append(createFooter());
 }
 createTodoList('.wrapper');
