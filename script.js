@@ -1,6 +1,5 @@
 function createTodoList(classBlock) {
-
-    let wrapper = document.querySelector(classBlock); 
+    let wrapper = document.querySelector(classBlock);
     let data = {
         todos: [
             {
@@ -8,10 +7,10 @@ function createTodoList(classBlock) {
             title: "buy milk",
             id: idGenerator(0, 10000)
             },
-            { 
+            {
             isActive: false,
             title: "buy bread",
-            id: idGenerator(0, 10000)  
+            id: idGenerator(0, 10000)
             },
             {
             isActive: false,
@@ -20,35 +19,37 @@ function createTodoList(classBlock) {
             },
         ]
     };
+    // TODO: don't forget console.logs and debuggers in code
     console.log(data.todos);
 
+    // TODO: method should be an action, e.g. "genereateId"
+    // TODO: remove unneeded arguments. Keep it clear so all logic placed only inside this method
     function idGenerator(min, max) {
+        // TODO: make readable variables. E.g. "randomNumber" or "generatedId"
         let int = Math.floor(Math.random() * (max - min + 1)) + min;
 
         return int.toString(10);
     }
 
     function createHeader() {
-
         let header = document.createElement('header');
         header.classList.add('header');
         header.innerHTML = "<h1>todos</h1>";
         return header;
     }
-    // TODO: think about changing naming.
-    //  You can start from here - https://www.crockford.com/code.html
-    //  and here - https://google.github.io/styleguide/jsguide.html#naming
+
     function createMain() {
-        // TODO: naming
+        // E.g.: "wrapper" or "todosWrapper" or "mainWrapper"
         let main = document.createElement('main');
-        // TODO: naming
+        // E.g.: "selectAll" or "selectAllTodos"
         let arrow = document.createElement('div');
-        // TODO: naming
+        // E.g.: "todosInput" or "newTodoInput"
         let inputMain = document.createElement('input');
         main.classList.add('content');
         arrow.classList.add('arrow');
 
         inputMain.placeholder = ('What needs to be done?');
+        // TODO: always move eventlistener callback to separated function
         inputMain.addEventListener('keydown', (enterKey) => {
             if (enterKey.keyCode === 13) {
                 data.todos.push({
@@ -59,6 +60,8 @@ function createTodoList(classBlock) {
                 console.log(inputMain.value);
                 console.log(data.todos);
 
+                // TODO: You should rewrite this logic and move it to separated function.
+                // TODO: Ideally there should be first method which adding new todo and second one which redrawing it
                 let removeWrapperTodos = document.querySelector('.wrapperTodos');
                 let main = document.querySelector('.content');
                 console.log(removeWrapperTodos);
@@ -79,18 +82,19 @@ function createTodoList(classBlock) {
     }
 
     function createdSingleTodo(item) {
-       
+        // TODO: E.g. "wrapper" or "todoWrapper"
         let todoItemDiv = document.createElement('div');
-        // TODO: naming
+        // TODO: E.g. "input" or "todoInput"
         let todoItemInput = document.createElement('input');
-        // TODO: naming
+        // TODO: E.g. "label" or "todoLabel"
         let todoItemLabel = document.createElement('label');
-        // TODO: naming
+        // TODO: E.g. "text" or "todoText"
         let todoItemText = document.createElement('p');
-        // TODO: naming
+        // TODO: E.g. "deleteTodo"
         let todoItemButton = document.createElement('button');
 
         todoItemDiv.classList.add('todo_item');
+        // TODO: You should delete "todo_item", no?
         todoItemDiv.id = ('todo_item' + item.id);
         todoItemButton.classList.add('delete_item');
         todoItemInput.id = item.id;
@@ -100,15 +104,16 @@ function createTodoList(classBlock) {
 
         todoItemInput.type = 'checkbox';
 
+        // TODO: move callback to separated method
         todoItemInput.addEventListener('click', () => {
 
             console.log(todoItemInput.id);
             console.log(typeof(todoItemInput.id));
-            
+
             data.todos.find(item => {
                 if (todoItemInput.id === item.id) {
                     if (todoItemInput.checked) {
-                        item.isActive = true; 
+                        item.isActive = true;
                     } else {
                         item.isActive = false;
                     }
@@ -121,7 +126,8 @@ function createTodoList(classBlock) {
         removeFooter.remove();
         wrapper.append(createFooter());
         });
-        
+
+        // TODO: move callback to separated method
         todoItemButton.addEventListener('click', () => {
 
             let removeTodo = document.querySelector('#' + todoItemDiv.id);
@@ -141,7 +147,7 @@ function createTodoList(classBlock) {
 
         });
 
-        
+
 
         todoItemDiv.append(todoItemInput);
         todoItemDiv.append(todoItemLabel);
@@ -151,8 +157,8 @@ function createTodoList(classBlock) {
         return todoItemDiv;
     }
 
+    // TODO: naming. E.g. "createAllTodos"
     function createdAllTodos(todos) {
-
         let list = document.createElement('div');
         list.classList.add('wrapperTodos');
 
@@ -160,21 +166,25 @@ function createTodoList(classBlock) {
 
         return list;
     }
-    
+
     function createFooter() {
+        // TODO: Naming. E.g. "wrapper" or "footerWrapper"
         let footer = document.createElement('footer');
-        // TODO: naming
+        // TODO: Naming E.g. "counterWrapper" or ""
         let counter = document.createElement('div');
-        // TODO: naming
+        // TODO: Naming E.g. "counterValue"
         let counterText = document.createElement('p');
-        // TODO: naming
+        // TODO: Naming E.g. "filtersWrapper"
         let buttons = document.createElement('div');
+        // TODO: Naming E.g. "filterAll"
         let buttonAll = document.createElement('button');
+        // TODO: Naming E.g. "filterActive"
         let buttonActive = document.createElement('button');
+        // TODO: Naming E.g. "filterCompleted"
         let buttonCompleted = document.createElement('button');
-        // TODO: naming
+        // TODO: Naming E.g. "clearCompletedWrapper" or "clearCompletedTodosWrapper"
         let clear = document.createElement('div');
-        // TODO: naming
+        // TODO: Naming E.g. "clearCompletedText"
         let link = document.createElement('a');
 
         footer.classList.add('footer');
@@ -202,18 +212,16 @@ function createTodoList(classBlock) {
     }
 
     function calculateActiveTodos(todos) {
-
         let counterItem = document.createElement('div');
         let count = 0;
 
         counterItem.classList.add('counter-item');
 
         todos.forEach((item) => {
-            
             if (item.isActive === false) {
                 count++;
             }
-            
+
             return count;
         });
 
@@ -221,8 +229,6 @@ function createTodoList(classBlock) {
 
         return counterItem;
     }
-
-    
 
     wrapper.append(createHeader());
     wrapper.append(createMain());
@@ -233,9 +239,8 @@ function createTodoList(classBlock) {
 createTodoList('.wrapper');
 
 //TODO: NEXT STEPS:
-// 1. Add new method called 'idGenerator' and add unique ID to all your todos
-// 2. Finish with isActive. Make it work for all your todos. It is not working properly right now. NOTE: 'idGenerator' might be handy in here.
-// 3. Fix active events counter(Left bottom corner). Make it work properly.
-// 4. Add logic for 'Clear completed' button. When clicking it should delete all checked todos. NOTE: 'idGenerator' might be handy
-// 5. Add logic for creating new todo. When you write something in top input and press 'enter' button - new todo should be added to your list and displayed. Make it to remove unneeded spaces first so texts like '        ' won't be added.
-
+// 1. Finish with all TODOs
+// 2. (Still not working) Add logic for 'Clear completed' button. When clicking it should delete all checked todos. NOTE: 'idGenerator' might be handy
+// 3. (Working partly. Should not let '     ' todos to be added) Add logic for creating new todo. When you write something in top input and press 'enter' button - new todo should be added to your list and displayed. Make it to remove unneeded spaces first so texts like '        ' won't be added.
+// 4. Bug. When adding new todo if there was any active one they all becoming inactive. Fix it.
+// 5. Add logic for filtering buttons. Let them display proper set of todos respectively
