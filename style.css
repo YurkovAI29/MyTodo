@@ -63,7 +63,7 @@ input[type=checkbox] {
     display: none;
 }
 
-input[type=checkbox] + label:before {
+input[type=checkbox] {
     content: "\2714";
     color: transparent;
     display: inline-block;
@@ -80,9 +80,22 @@ input[type=checkbox] + label:before {
     transition: color ease .3s;
 }
 
-input[type=checkbox]:checked + label:before {
+input[type=checkbox]:checked {
+    content: "\2714";
+    display: inline-block;
     color: #5DC2AF;
+    border: 1px solid #ccc;
     border-color: #5DC2AF;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 22px;
+    margin: -5px 5px 0 0;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    vertical-align: middle;
+    transition: color ease .3s;
 }
 
 .todo_item p {

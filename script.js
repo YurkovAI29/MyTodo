@@ -5,210 +5,261 @@ function createTodoList(classBlock) {
             {
             isActive: false,
             title: "buy milk",
-            id: idGenerator(0, 10000)
+            id: generatorId()
             },
             {
             isActive: false,
             title: "buy bread",
-            id: idGenerator(0, 10000)
+            id: generatorId()
             },
             {
             isActive: false,
             title: "buy beer",
-            id: idGenerator(0, 10000)
+            id: generatorId()
             },
         ]
     };
-    // TODO: don't forget console.logs and debuggers in code
-    console.log(data.todos);
+    // TODO: don't forget console.logs and debuggers in code 
+    //console.log(data.todos);
 
-    // TODO: method should be an action, e.g. "genereateId"
-    // TODO: remove unneeded arguments. Keep it clear so all logic placed only inside this method
-    function idGenerator(min, max) {
-        // TODO: make readable variables. E.g. "randomNumber" or "generatedId"
-        let int = Math.floor(Math.random() * (max - min + 1)) + min;
+    // TODO: method should be an action, e.g. "genereateId"  FIXED 
+    // TODO: remove unneeded arguments. Keep it clear so all logic placed only inside this method  FIXED
+    function generatorId() {
+        // TODO: make readable variables. E.g. "randomNumber" or "generatedId"  FIXED
+        let minNumber = 0;
+        let maxNumber = 10000;
+        let randomId = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
 
-        return int.toString(10);
+        return randomId.toString(10);
     }
 
     function createHeader() {
-        let header = document.createElement('header');
-        header.classList.add('header');
-        header.innerHTML = "<h1>todos</h1>";
-        return header;
+        let createdHeader = document.createElement('header'); //FIXED
+        createdHeader.classList.add('header');
+        createdHeader.innerHTML = "<h1>todos</h1>";
+
+        return createdHeader;
     }
 
     function createMain() {
-        // E.g.: "wrapper" or "todosWrapper" or "mainWrapper"
-        let main = document.createElement('main');
-        // E.g.: "selectAll" or "selectAllTodos"
-        let arrow = document.createElement('div');
-        // E.g.: "todosInput" or "newTodoInput"
-        let inputMain = document.createElement('input');
-        main.classList.add('content');
-        arrow.classList.add('arrow');
+        // E.g.: "wrapper" or "todosWrapper" or "mainWrapper"  FIXED
+        let wrapperMainInputField = document.createElement('main');
+        // E.g.: "selectAll" or "selectAllTodos"  FIXED
+        let selectAllActiveTodos = document.createElement('div');
+        // E.g.: "todosInput" or "newTodoInput"  FIXED
+        let MainInputField = document.createElement('input');
 
-        inputMain.placeholder = ('What needs to be done?');
-        // TODO: always move eventlistener callback to separated function
-        inputMain.addEventListener('keydown', (enterKey) => {
-            if (enterKey.keyCode === 13) {
+        wrapperMainInputField.classList.add('content');
+        selectAllActiveTodos.classList.add('arrow');
+        MainInputField.classList.add('main_input');
+
+        MainInputField.placeholder = ('What needs to be done?');
+        // TODO: always move eventlistener callback to separated function  FIXED
+
+        wrapperMainInputField.append(selectAllActiveTodos);
+        wrapperMainInputField.append(MainInputField);
+
+        return wrapperMainInputField;
+    }
+
+    function addNewTodo() {
+        let MainInputField = document.querySelector('.main_input');
+
+        MainInputField.addEventListener('keydown', (enterKey) => {
+            if (enterKey.keyCode === 13 && MainInputField.value !== '') {
+                // Question!!!!!
+                // if i compare conditions MainInputField.value !== null or !== false or 
+                // typeOf = "undefined" nothing happens, WHY?
                 data.todos.push({
                     isActive: false,
-                    title: inputMain.value,
-                    id: idGenerator(0, 10000)
+                    title: MainInputField.value,
+                    id: generatorId()
                 });
-                console.log(inputMain.value);
-                console.log(data.todos);
+                //console.log(MainInputField.value);
+                //console.log(data.todos);
 
-                // TODO: You should rewrite this logic and move it to separated function.
-                // TODO: Ideally there should be first method which adding new todo and second one which redrawing it
-                let removeWrapperTodos = document.querySelector('.wrapperTodos');
-                let main = document.querySelector('.content');
-                console.log(removeWrapperTodos);
-                removeWrapperTodos.remove();
-                main.after(createdAllTodos(data.todos));
+                // TODO: You should rewrite this logic and move it to separated function.  FIXED
+                // TODO: Ideally there should be first method which adding new todo and second 
+                // one which redrawing it  FIXED
+                MainInputField.value = '';
+                redrawTodosList();
                 calculateActiveTodos(data.todos);
-                let removeFooter = document.querySelector('.footer');
-                removeFooter.remove();
-                wrapper.append(createFooter());
-                inputMain.value = '';
+                redrawFooter();
+                
             }
             return;
         });
+    }
 
-        main.append(arrow);
-        main.append(inputMain);
-        return main;
+    function redrawTodosList() {
+        let wrapperAllTodos = document.querySelector('.wrapperTodos');
+        let wrapperMainInputField = document.querySelector('.content');
+
+        wrapperAllTodos.remove();
+        wrapperMainInputField.after(createAllTodos(data.todos));
+    }
+
+    function redrawFooter() {
+        let footerWrapper = document.querySelector('.footer');
+
+        footerWrapper.remove();
+        wrapper.append(createFooter());
     }
 
     function createdSingleTodo(item) {
-        // TODO: E.g. "wrapper" or "todoWrapper"
-        let todoItemDiv = document.createElement('div');
-        // TODO: E.g. "input" or "todoInput"
-        let todoItemInput = document.createElement('input');
-        // TODO: E.g. "label" or "todoLabel"
-        let todoItemLabel = document.createElement('label');
-        // TODO: E.g. "text" or "todoText"
-        let todoItemText = document.createElement('p');
-        // TODO: E.g. "deleteTodo"
-        let todoItemButton = document.createElement('button');
+        // TODO: E.g. "wrapper" or "todoWrapper"  FIXED
+        let wrapperTodo = document.createElement('div');
+        // TODO: E.g. "input" or "todoInput"  FIXED
+        let inputCheckboxTodo = document.createElement('input');
+        // TODO: E.g. "label" or "todoLabel"  FIXED
+        let labelForCheckbox = document.createElement('label');
+        // TODO: E.g. "text" or "todoText"  FIXED
+        let textTodo = document.createElement('p');
+        // TODO: E.g. "deleteTodo"  FIXED
+        let deleteTodo = document.createElement('button');
 
-        todoItemDiv.classList.add('todo_item');
-        // TODO: You should delete "todo_item", no?
-        todoItemDiv.id = ('todo_item' + item.id);
-        todoItemButton.classList.add('delete_item');
-        todoItemInput.id = item.id;
+        wrapperTodo.classList.add('todo_item');
+        // TODO: You should delete "todo_item", no? FIXED
+        wrapperTodo.id = (item.id);
+        deleteTodo.classList.add('delete_item');
+        inputCheckboxTodo.classList.add('checkbox');
+        inputCheckboxTodo.id = item.id;
+        deleteTodo.id = (item.id);
+        
+        //labelForCheckbox.setAttribute('for', item.id);
+        textTodo.innerText = item.title;
 
-        todoItemLabel.setAttribute('for', item.id);
-        todoItemText.innerText = item.title;
+        inputCheckboxTodo.type = 'checkbox';
 
-        todoItemInput.type = 'checkbox';
+        // TODO: move callback to separated method  FIXED
 
-        // TODO: move callback to separated method
-        todoItemInput.addEventListener('click', () => {
+        // TODO: move callback to separated method  FIXED
+        // deleteTodo.addEventListener('click', () => {
 
-            console.log(todoItemInput.id);
-            console.log(typeof(todoItemInput.id));
+        //     let removeTodo = document.querySelector('#' + wrapperTodo.id);
+        //     console.log(removeTodo);
+        //     removeTodo.remove();
 
-            data.todos.find(item => {
-                if (todoItemInput.id === item.id) {
-                    if (todoItemInput.checked) {
-                        item.isActive = true;
-                    } else {
-                        item.isActive = false;
-                    }
-                }
-            });
+            // let newArr = data.todos.filter(item => (inputCheckboxTodo.id !== item.id));
+            // console.log(newArr);
+            // data.todos.length = 0;
+            // data.todos = newArr.slice();
+            // console.log(data.todos);
 
-        console.log(data.todos);
-        calculateActiveTodos(data.todos);
-        let removeFooter = document.querySelector('.footer');
-        removeFooter.remove();
-        wrapper.append(createFooter());
-        });
+            // calculateActiveTodos(data.todos);
+            // let removeFooter = document.querySelector('.footer');
+            // removeFooter.remove();
+            // wrapper.append(createFooter());
 
-        // TODO: move callback to separated method
-        todoItemButton.addEventListener('click', () => {
+        // });
 
-            let removeTodo = document.querySelector('#' + todoItemDiv.id);
-            console.log(removeTodo);
-            removeTodo.remove();
+        //wrapperTodo.append(inputCheckboxTodo);
+        wrapperTodo.append(labelForCheckbox);
+        labelForCheckbox.appendChild(inputCheckboxTodo);
+        wrapperTodo.append(textTodo);
+        wrapperTodo.append(deleteTodo);
 
-            let newArr = data.todos.filter(item => (todoItemInput.id !== item.id));
-            console.log(newArr);
-            data.todos.length = 0;
-            data.todos = newArr.slice();
-            console.log(data.todos);
-
-            calculateActiveTodos(data.todos);
-            let removeFooter = document.querySelector('.footer');
-            removeFooter.remove();
-            wrapper.append(createFooter());
-
-        });
-
-
-
-        todoItemDiv.append(todoItemInput);
-        todoItemDiv.append(todoItemLabel);
-        todoItemDiv.append(todoItemText);
-        todoItemDiv.append(todoItemButton);
-
-        return todoItemDiv;
+        return wrapperTodo;
     }
 
-    // TODO: naming. E.g. "createAllTodos"
-    function createdAllTodos(todos) {
-        let list = document.createElement('div');
-        list.classList.add('wrapperTodos');
+    // TODO: move callback to separated method  FIXED
+    function changeCheckedState(event) {
+        //let inputCheckboxTodo = document.querySelector('.wrapperTodos');
+        // Question!!!!! 
+        // maybe hang an event.target only on the wrapperTodos, because now event.target hang on the all document?
+        if (event.target.className === 'checkbox') {
+            let idTodo = event.target.id;
 
-        todos.forEach(item => list.append(createdSingleTodo(item)));
+            data.todos.find(item => {
+            if (idTodo === item.id) {
+                if (event.target.checked) {
+                    item.isActive = true;
+                } else {
+                    item.isActive = false;
+                }
+            }
+        });
+        }
+        
+        calculateActiveTodos(data.todos);
+        redrawFooter();
+    }
 
-        return list;
+    // TODO: move callback to separated method  FIXED
+    function deleteTodo(event) {
+        if (event.target.className === 'delete_item') {
+            let wraperTodo = document.querySelectorAll('.todo_item');
+            let deleteTodo = event.target.id;
+
+            wraperTodo.forEach(item => {
+            if (item.id === deleteTodo) {
+                item.remove();
+            }
+            });
+            let newArr = data.todos.filter(item => (deleteTodo !== item.id));
+            //console.log(newArr);
+            data.todos.length = 0;
+            data.todos = newArr.slice();
+            //console.log(data.todos);
+        }
+        calculateActiveTodos(data.todos);
+        redrawFooter();
+
+    }
+
+    // TODO: naming. E.g. "createAllTodos"  FIXED
+    function createAllTodos(todos) {
+        let listTodos = document.createElement('div');
+
+        listTodos.classList.add('wrapperTodos');
+
+        todos.forEach(item => listTodos.appendChild(createdSingleTodo(item)));
+
+        return listTodos;
     }
 
     function createFooter() {
-        // TODO: Naming. E.g. "wrapper" or "footerWrapper"
-        let footer = document.createElement('footer');
-        // TODO: Naming E.g. "counterWrapper" or ""
-        let counter = document.createElement('div');
-        // TODO: Naming E.g. "counterValue"
-        let counterText = document.createElement('p');
-        // TODO: Naming E.g. "filtersWrapper"
-        let buttons = document.createElement('div');
-        // TODO: Naming E.g. "filterAll"
-        let buttonAll = document.createElement('button');
-        // TODO: Naming E.g. "filterActive"
-        let buttonActive = document.createElement('button');
-        // TODO: Naming E.g. "filterCompleted"
-        let buttonCompleted = document.createElement('button');
+        // TODO: Naming. E.g. "wrapper" or "footerWrapper"  FIXED
+        let footerWrapper = document.createElement('footer');
+        // TODO: Naming E.g. "counterWrapper" or ""  FIXED
+        let counterWrapper = document.createElement('div');
+        // TODO: Naming E.g. "counterValue"  FIXED
+        let counterValue = document.createElement('p');
+        // TODO: Naming E.g. "filtersWrapper"  FIXED
+        let filtersWrapper = document.createElement('div');
+        // TODO: Naming E.g. "filterAll"  FIXED
+        let filterAll = document.createElement('button');
+        // TODO: Naming E.g. "filterActive"  FIXED
+        let filterActive = document.createElement('button');
+        // TODO: Naming E.g. "filterCompleted"  FIXED
+        let filterCompleted = document.createElement('button');
         // TODO: Naming E.g. "clearCompletedWrapper" or "clearCompletedTodosWrapper"
-        let clear = document.createElement('div');
+        let clearCompletedTodosWrapper = document.createElement('div');
         // TODO: Naming E.g. "clearCompletedText"
-        let link = document.createElement('a');
+        let clearCompletedText = document.createElement('a');
 
-        footer.classList.add('footer');
-        counter.classList.add('counter');
-        buttons.classList.add('buttons');
-        clear.classList.add('clear');
+        footerWrapper.classList.add('footer');
+        counterWrapper.classList.add('counter');
+        filtersWrapper.classList.add('buttons');
+        clearCompletedTodosWrapper.classList.add('clear');
 
-        counterText.innerText = 'items left';
-        buttonAll.innerText = 'All';
-        buttonActive.innerText = 'Active';
-        buttonCompleted.innerText = 'Completed';
-        link.innerText = 'Clear completed';
+        counterValue.innerText = 'items left';
+        filterAll.innerText = 'All';
+        filterActive.innerText = 'Active';
+        filterCompleted.innerText = 'Completed';
+        clearCompletedText.innerText = 'Clear completed';
 
-        footer.append(counter);
-        counter.append(calculateActiveTodos(data.todos));
-        counter.append(counterText);
-        footer.append(buttons);
-        buttons.append(buttonAll);
-        buttons.append(buttonActive);
-        buttons.append(buttonCompleted);
-        footer.append(clear);
-        clear.append(link);
+        footerWrapper.append(counterWrapper);
+        counterWrapper.append(calculateActiveTodos(data.todos));
+        counterWrapper.append(counterValue);
+        footerWrapper.append(filtersWrapper);
+        filtersWrapper.append(filterAll);
+        filtersWrapper.append(filterActive);
+        filtersWrapper.append(filterCompleted);
+        footerWrapper.append(clearCompletedTodosWrapper);
+        clearCompletedTodosWrapper.append(clearCompletedText);
 
-        return footer;
+        return footerWrapper;
     }
 
     function calculateActiveTodos(todos) {
@@ -230,9 +281,13 @@ function createTodoList(classBlock) {
         return counterItem;
     }
 
+    addEventListener('click', addNewTodo);
+    addEventListener('click', changeCheckedState);
+    addEventListener('click', deleteTodo);
+
     wrapper.append(createHeader());
     wrapper.append(createMain());
-    wrapper.append(createdAllTodos(data.todos));
+    wrapper.append(createAllTodos(data.todos));
     wrapper.append(createFooter());
 
 }
