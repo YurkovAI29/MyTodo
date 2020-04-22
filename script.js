@@ -281,9 +281,38 @@ function createTodoList(classBlock) {
         return counterItem;
     }
 
+    function removeCompletedTodos(event) {
+        // this code works, but he hat. I wanted to reuse the function deleteTodo, but could not. I need your help
+        if (event.target.tagName === 'A') {
+            data.todos.forEach(item => {
+
+                if (item.isActive === true) {
+                    let wraperTodo = document.querySelectorAll('.todo_item');
+                    let deleteTodo = item.id;
+                    console.log(wraperTodo);
+                    console.log(deleteTodo);
+
+                    wraperTodo.forEach(item => {
+                        if (item.id === deleteTodo) {
+                            item.remove();
+                        }
+                    });
+                }
+            });
+            let newArr = data.todos.filter(item => (deleteTodo !== item.id));
+            data.todos.length = 0;
+            data.todos = newArr.slice();
+            calculateActiveTodos(data.todos);
+            redrawFooter();
+            console.log(data.todos);
+        }
+        
+    }
+
     addEventListener('click', addNewTodo);
     addEventListener('click', changeCheckedState);
     addEventListener('click', deleteTodo);
+    addEventListener('click', removeCompletedTodos);
 
     wrapper.append(createHeader());
     wrapper.append(createMain());
