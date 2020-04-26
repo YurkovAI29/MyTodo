@@ -5,36 +5,31 @@ function createTodoList(classBlock) {
             {
             isActive: false,
             title: "buy milk",
-            id: generatorId()
+            id: genereateId()
             },
             {
             isActive: false,
             title: "buy bread",
-            id: generatorId()
+            id: genereateId()
             },
             {
             isActive: false,
             title: "buy beer",
-            id: generatorId()
+            id: genereateId()
             },
         ]
     };
-    // TODO: don't forget console.logs and debuggers in code 
-    //console.log(data.todos);
 
-    // TODO: method should be an action, e.g. "genereateId"  FIXED 
-    // TODO: remove unneeded arguments. Keep it clear so all logic placed only inside this method  FIXED
-    function generatorId() {
-        // TODO: make readable variables. E.g. "randomNumber" or "generatedId"  FIXED
+    function genereateId() {
         let minNumber = 0;
         let maxNumber = 10000;
-        let randomId = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+        let result = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
 
-        return randomId.toString(10);
+        return result.toString(10);
     }
 
     function createHeader() {
-        let createdHeader = document.createElement('header'); //FIXED
+        let createdHeader = document.createElement('header');
         createdHeader.classList.add('header');
         createdHeader.innerHTML = "<h1>todos</h1>";
 
@@ -42,64 +37,67 @@ function createTodoList(classBlock) {
     }
 
     function createMain() {
-        // E.g.: "wrapper" or "todosWrapper" or "mainWrapper"  FIXED
-        let wrapperMainInputField = document.createElement('main');
-        // E.g.: "selectAll" or "selectAllTodos"  FIXED
-        let selectAllActiveTodos = document.createElement('div');
-        // E.g.: "todosInput" or "newTodoInput"  FIXED
-        let MainInputField = document.createElement('input');
+        // don't make names too complicated
+        let wrapper = document.createElement('main');
+        let selectAllTodos = document.createElement('div');
+        // don't use capital letter for such namings
+        // also don't make names too complicated
+        let newTodoInput = document.createElement('input');
 
-        wrapperMainInputField.classList.add('content');
-        selectAllActiveTodos.classList.add('arrow');
-        MainInputField.classList.add('main_input');
+        wrapper.classList.add('content');
+        selectAllTodos.classList.add('arrow');
+        // try to use one naming approach. E.g. don't mix camel case with underscore
+        newTodoInput.classList.add('main_input');
 
-        MainInputField.placeholder = ('What needs to be done?');
-        // TODO: always move eventlistener callback to separated function  FIXED
+        newTodoInput.placeholder = ('What needs to be done?');
+        // Where is event listener? Should be inside createMain method.
 
-        wrapperMainInputField.append(selectAllActiveTodos);
-        wrapperMainInputField.append(MainInputField);
+        wrapper.append(selectAllTodos);
+        wrapper.append(newTodoInput);
 
-        return wrapperMainInputField;
+        return wrapper;
     }
 
     function addNewTodo() {
         let MainInputField = document.querySelector('.main_input');
 
+        // TODO: There is something wrong with your addNewTodo method. It's been called dozen times. Check where you calling it and make it to be called once per creation
+        // TODO: Also remove eventListener to separated method. It shouldn't be here
         MainInputField.addEventListener('keydown', (enterKey) => {
             if (enterKey.keyCode === 13 && MainInputField.value !== '') {
                 // Question!!!!!
-                // if i compare conditions MainInputField.value !== null or !== false or 
+                // if i compare conditions MainInputField.value !== null or !== false or
                 // typeOf = "undefined" nothing happens, WHY?
+                // Answer: What you want to be happen? Seems like input value cannot be undefined or null and definitely NOT boolean type either
                 data.todos.push({
                     isActive: false,
                     title: MainInputField.value,
-                    id: generatorId()
+                    id: genereateId()
                 });
-                //console.log(MainInputField.value);
-                //console.log(data.todos);
 
-                // TODO: You should rewrite this logic and move it to separated function.  FIXED
-                // TODO: Ideally there should be first method which adding new todo and second 
-                // one which redrawing it  FIXED
                 MainInputField.value = '';
+                // TODO: create separated method with all this inside
                 redrawTodosList();
                 calculateActiveTodos(data.todos);
                 redrawFooter();
-                
+
             }
             return;
         });
     }
 
     function redrawTodosList() {
-        let wrapperAllTodos = document.querySelector('.wrapperTodos');
+        // TODO: use document only at begginning. Find a way to do it differently.
+        let wrapper = document.querySelector('.todosWrapper');
         let wrapperMainInputField = document.querySelector('.content');
 
-        wrapperAllTodos.remove();
+        // Something wrong with redrawing. Try to delete few todos and than add new one. All deleted todos displayed again
+        wrapper.remove();
         wrapperMainInputField.after(createAllTodos(data.todos));
     }
 
     function redrawFooter() {
+        // Same comments as in redrawTodosList
         let footerWrapper = document.querySelector('.footer');
 
         footerWrapper.remove();
@@ -107,66 +105,36 @@ function createTodoList(classBlock) {
     }
 
     function createdSingleTodo(item) {
-        // TODO: E.g. "wrapper" or "todoWrapper"  FIXED
-        let wrapperTodo = document.createElement('div');
-        // TODO: E.g. "input" or "todoInput"  FIXED
+        let todoWrapper = document.createElement('div');
         let inputCheckboxTodo = document.createElement('input');
-        // TODO: E.g. "label" or "todoLabel"  FIXED
-        let labelForCheckbox = document.createElement('label');
-        // TODO: E.g. "text" or "todoText"  FIXED
-        let textTodo = document.createElement('p');
-        // TODO: E.g. "deleteTodo"  FIXED
+        let todoLabel = document.createElement('label');
+        let todoText = document.createElement('p');
         let deleteTodo = document.createElement('button');
 
-        wrapperTodo.classList.add('todo_item');
-        // TODO: You should delete "todo_item", no? FIXED
-        wrapperTodo.id = (item.id);
+        todoWrapper.classList.add('todo_item');
+        todoWrapper.id = (item.id);
         deleteTodo.classList.add('delete_item');
         inputCheckboxTodo.classList.add('checkbox');
         inputCheckboxTodo.id = item.id;
         deleteTodo.id = (item.id);
-        
-        //labelForCheckbox.setAttribute('for', item.id);
-        textTodo.innerText = item.title;
+
+        todoText.innerText = item.title;
 
         inputCheckboxTodo.type = 'checkbox';
 
-        // TODO: move callback to separated method  FIXED
+        todoWrapper.append(todoLabel);
+        todoLabel.appendChild(inputCheckboxTodo);
+        todoWrapper.append(todoText);
+        todoWrapper.append(deleteTodo);
 
-        // TODO: move callback to separated method  FIXED
-        // deleteTodo.addEventListener('click', () => {
-
-        //     let removeTodo = document.querySelector('#' + wrapperTodo.id);
-        //     console.log(removeTodo);
-        //     removeTodo.remove();
-
-            // let newArr = data.todos.filter(item => (inputCheckboxTodo.id !== item.id));
-            // console.log(newArr);
-            // data.todos.length = 0;
-            // data.todos = newArr.slice();
-            // console.log(data.todos);
-
-            // calculateActiveTodos(data.todos);
-            // let removeFooter = document.querySelector('.footer');
-            // removeFooter.remove();
-            // wrapper.append(createFooter());
-
-        // });
-
-        //wrapperTodo.append(inputCheckboxTodo);
-        wrapperTodo.append(labelForCheckbox);
-        labelForCheckbox.appendChild(inputCheckboxTodo);
-        wrapperTodo.append(textTodo);
-        wrapperTodo.append(deleteTodo);
-
-        return wrapperTodo;
+        return todoWrapper;
     }
 
     // TODO: move callback to separated method  FIXED
     function changeCheckedState(event) {
-        //let inputCheckboxTodo = document.querySelector('.wrapperTodos');
-        // Question!!!!! 
-        // maybe hang an event.target only on the wrapperTodos, because now event.target hang on the all document?
+        //let inputCheckboxTodo = document.querySelector('.todosWrapper');
+        // Question!!!!!
+        // maybe hang an event.target only on the todosWrapper, because now event.target hang on the all document?
         if (event.target.className === 'checkbox') {
             let idTodo = event.target.id;
 
@@ -180,7 +148,7 @@ function createTodoList(classBlock) {
             }
         });
         }
-        
+
         calculateActiveTodos(data.todos);
         redrawFooter();
     }
@@ -211,7 +179,7 @@ function createTodoList(classBlock) {
     function createAllTodos(todos) {
         let listTodos = document.createElement('div');
 
-        listTodos.classList.add('wrapperTodos');
+        listTodos.classList.add('todosWrapper');
 
         todos.forEach(item => listTodos.appendChild(createdSingleTodo(item)));
 
@@ -281,14 +249,16 @@ function createTodoList(classBlock) {
         return counterItem;
     }
 
-    function removeCompletedTodos(event) {
+    function removeCompletedTodos(event) {debugger
         // this code works, but he hat. I wanted to reuse the function deleteTodo, but could not. I need your help
         if (event.target.tagName === 'A') {
             data.todos.forEach(item => {
 
                 if (item.isActive === true) {
+                    // dont use document !
                     let wraperTodo = document.querySelectorAll('.todo_item');
                     let deleteTodo = item.id;
+                    // console.logs again!
                     console.log(wraperTodo);
                     console.log(deleteTodo);
 
@@ -299,6 +269,7 @@ function createTodoList(classBlock) {
                     });
                 }
             });
+            // naming
             let newArr = data.todos.filter(item => (deleteTodo !== item.id));
             data.todos.length = 0;
             data.todos = newArr.slice();
@@ -306,9 +277,11 @@ function createTodoList(classBlock) {
             redrawFooter();
             console.log(data.todos);
         }
-        
+
     }
 
+    // Never do this again. Ever! )
+    //TODO: move listeners to their respective owners
     addEventListener('click', addNewTodo);
     addEventListener('click', changeCheckedState);
     addEventListener('click', deleteTodo);
@@ -324,7 +297,7 @@ createTodoList('.wrapper');
 
 //TODO: NEXT STEPS:
 // 1. Finish with all TODOs
-// 2. (Still not working) Add logic for 'Clear completed' button. When clicking it should delete all checked todos. NOTE: 'idGenerator' might be handy
-// 3. (Working partly. Should not let '     ' todos to be added) Add logic for creating new todo. When you write something in top input and press 'enter' button - new todo should be added to your list and displayed. Make it to remove unneeded spaces first so texts like '        ' won't be added.
-// 4. Bug. When adding new todo if there was any active one they all becoming inactive. Fix it.
-// 5. Add logic for filtering buttons. Let them display proper set of todos respectively
+// 2. (Still not working) Add logic for 'Clear completed' button. When clicking it should delete all checked todos. NOTE: 'idGenerator' might be handy. NOTE - deleted items can't be displayed again. They deleted forever
+// 3. (Still not working) (Working partly. Should not let '     ' todos to be added) Add logic for creating new todo. When you write something in top input and press 'enter' button - new todo should be added to your list and displayed. Make it to remove unneeded spaces first so texts like '        ' won't be added.
+// 4. (Still not working) Bug. When adding new todo if there was any active one they all becoming inactive. Fix it.
+// 5. (Still not working) Add logic for filtering buttons. Let them display proper set of todos respectively. Also make default one be active from beginning.
