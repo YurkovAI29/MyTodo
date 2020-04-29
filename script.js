@@ -82,7 +82,7 @@ function createTodoList(classBlock) {
                 // TODO: Ideally there should be first method which adding new todo and second 
                 // one which redrawing it  FIXED
                 MainInputField.value = '';
-                redrawTodosList();
+                redrawTodosList(createAllTodos(data.todos));
                 calculateActiveTodos(data.todos);
                 redrawFooter();
                 
@@ -91,12 +91,11 @@ function createTodoList(classBlock) {
         });
     }
 
-    function redrawTodosList() {
+    function redrawTodosList(newTodos) {
         let wrapperAllTodos = document.querySelector('.wrapperTodos');
-        let wrapperMainInputField = document.querySelector('.content');
-
-        wrapperAllTodos.remove();
-        wrapperMainInputField.after(createAllTodos(data.todos));
+        
+        wrapperAllTodos.innerHTML = ''; 
+        wrapperAllTodos.appendChild(newTodos); 
     }
 
     function redrawFooter() {
