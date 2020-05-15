@@ -161,3 +161,7 @@ button {
 button:active {
     border: 1px solid #EFD5D5;
 }
+
+.activeBtn {
+    border: 2px solid red;
+}
