@@ -5,22 +5,22 @@ function createTodoList(classBlock) {
             {
             isActive: false,
             title: "buy milk",
-            id: genereateId()
+            id: generateId()
             },
             {
             isActive: false,
             title: "buy bread",
-            id: genereateId()
+            id: generateId()
             },
             {
             isActive: false,
             title: "buy beer",
-            id: genereateId()
+            id: generateId()
             },
         ]
     };
 
-    function genereateId() {
+    function generateId() {
         let minNumber = 0;
         let maxNumber = 10000;
         let result = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
@@ -37,16 +37,12 @@ function createTodoList(classBlock) {
     }
 
     function createMain() {
-        // don't make names too complicated
         let wrapper = document.createElement('main');
         let selectAllTodos = document.createElement('div');
-        // don't use capital letter for such namings
-        // also don't make names too complicated
         let newTodoInput = document.createElement('input');
 
         wrapper.classList.add('content');
         selectAllTodos.classList.add('arrow');
-        // try to use one naming approach. E.g. don't mix camel case with underscore
         newTodoInput.classList.add('main_input');
 
         newTodoInput.placeholder = ('What needs to be done?');
@@ -59,16 +55,22 @@ function createTodoList(classBlock) {
     }
 
     function addNewTodo(event) {
+        // don't use capital leter for such variables
         let MainInputField = document.querySelector('.main_input');
-        
+
         if (event.key === 'Enter' && MainInputField.value.trim().length !== 0) {
-            data.todos.push({
+            const newTodo = {
                 isActive: false,
                 title: MainInputField.value,
-                id: genereateId()
-            });
+                id: generateId()
+            };
+
+            data.todos.push(newTodo);
 
             MainInputField.value = '';
+            // TODO: Make it more readable.
+            //  E.g. instead redrawTodosList(createAllTodos(data.todos));
+            //  make it work like redrawTodosList(data.todos)
             redrawTodosList(createAllTodos(data.todos));
             calculateActiveTodos(data.todos);
             redrawFooter();
@@ -77,14 +79,13 @@ function createTodoList(classBlock) {
     }
 
     function redrawTodosList(newTodos) {
-        let wrapperAllTodos = document.querySelector('.todosWrapper');
-        
-        wrapperAllTodos.innerHTML = ''; 
-        wrapperAllTodos.appendChild(newTodos); 
+        let todosWrapper = document.querySelector('.todosWrapper');
+
+        todosWrapper.innerHTML = '';
+        todosWrapper.appendChild(newTodos);
     }
 
     function redrawFooter() {
-        // Same comments as in redrawTodosList
         let footerWrapper = document.querySelector('.footer');
 
         footerWrapper.remove();
@@ -111,7 +112,7 @@ function createTodoList(classBlock) {
         if (item.isActive === true) {
             inputCheckboxTodo.checked = true;
         }
-        
+
         inputCheckboxTodo.addEventListener('click', changeCheckedState);
         deleteTodo.addEventListener('click', removeTodo);
 
@@ -124,11 +125,11 @@ function createTodoList(classBlock) {
     }
 
     function changeCheckedState(event) {
-        
-        let idTodo = event.target.id;
+        let id = event.target.id;
 
         data.todos.find(item => {
-        if (idTodo === item.id) {
+        if (item.id === id) {
+            // TODO: I suggest to use ternary operator in here
             if (event.target.checked) {
                 item.isActive = true;
             } else {
@@ -142,26 +143,30 @@ function createTodoList(classBlock) {
     }
 
     function removeTodo(event) {
+        // Don't make complicated namings if not really needed )
+        let id = event.target.id;
+        // TODO: Using 'filter' method for removing only one item from array is implicit. Use another approach
+        let modifiedArray = data.todos.filter(item => (item.id !== id));
 
-        let deleteTodo = event.target.id;
-        let modifiedArray = data.todos.filter(item => (deleteTodo !== item.id));
-
-        data.todos.length = 0;
+        // I suggest to use data.todos = [] instead as it's less implicit
+        // But in fact you don't need to clear array at all if you rewriting it in next line (!)
+        // data.todos.length = 0;
         data.todos = modifiedArray.slice();
 
+        // TODO: make such repeatable pieces re-usable! Move it to separated method.
         redrawTodosList(createAllTodos(data.todos));
         calculateActiveTodos(data.todos);
         redrawFooter();
     }
 
     function createAllTodos(todos) {
-        let listTodos = document.createElement('div');
+        let todoList = document.createElement('div');
 
-        listTodos.classList.add('todosWrapper');
+        todoList.classList.add('todosWrapper');
 
-        todos.forEach(item => listTodos.appendChild(createdSingleTodo(item)));
+        todos.forEach(item => todoList.appendChild(createdSingleTodo(item)));
 
-        return listTodos;
+        return todoList;
     }
 
     function createFooter() {
@@ -172,8 +177,11 @@ function createTodoList(classBlock) {
         let filterAll = document.createElement('button');
         let filterActive = document.createElement('button');
         let filterCompleted = document.createElement('button');
+        // dom elements can't be named with actions such as 'clear'
         let clearCompletedTodosWrapper = document.createElement('div');
+        // dom elements can't be named with actions such as 'clear'
         let clearCompletedText = document.createElement('a');
+        const calculatedActiveTodos = calculateActiveTodos(data.todos);
 
         footerWrapper.classList.add('footer');
         counterWrapper.classList.add('counter');
@@ -192,7 +200,7 @@ function createTodoList(classBlock) {
         filterCompleted.addEventListener('click', createCompletedTodosList);
 
         footerWrapper.append(counterWrapper);
-        counterWrapper.append(calculateActiveTodos(data.todos));
+        counterWrapper.append(calculatedActiveTodos);
         counterWrapper.append(counterValue);
         footerWrapper.append(filtersWrapper);
         filtersWrapper.append(filterAll);
@@ -211,7 +219,8 @@ function createTodoList(classBlock) {
         counterItem.classList.add('counter-item');
 
         todos.forEach((item) => {
-            if (item.isActive === false) {
+            // item.isActive === false same as !item.isActive
+            if (!item.isActive) {
                 count++;
             }
 
@@ -224,11 +233,11 @@ function createTodoList(classBlock) {
     }
 
     function removeCompletedTodos() {
-        
-        let modifiedArray = data.todos.filter(item => (item.isActive !== true));
+        // TODO: Naming! Make it easy to understand!
+        let incompleteTodos = data.todos.filter(item => (item.isActive !== true));
 
-        data.todos.length = 0;
-        data.todos = modifiedArray.slice();
+        // data.todos.length = 0;
+        data.todos = incompleteTodos.slice();
 
         redrawTodosList(createAllTodos(data.todos));
         calculateActiveTodos(data.todos);
@@ -240,12 +249,16 @@ function createTodoList(classBlock) {
     }
 
     function createActiveTodosList() {
-        newArr = data.todos.filter(item => (item.isActive === false));
+        // Do not use implicit declarations EVER
+        //(item.isActive === false) === (!item.isActive)
+        newArr = data.todos.filter(item => (!item.isActive));
         redrawTodosList(createAllTodos(newArr));
     }
 
     function createCompletedTodosList() {
-        newArr = data.todos.filter(item => (item.isActive === true));
+        // Do not use implicit declarations EVER
+        //(item.isActive === true) === (item.isActive)
+        newArr = data.todos.filter(item => (item.isActive));
         redrawTodosList(createAllTodos(newArr));
     }
 
@@ -258,8 +271,9 @@ function createTodoList(classBlock) {
 createTodoList('.wrapper');
 
 //TODO: NEXT STEPS:
-// 1. Finish with all TODOs
-// 2. (Still not working) Add logic for 'Clear completed' button. When clicking it should delete all checked todos. NOTE: 'idGenerator' might be handy. NOTE - deleted items can't be displayed again. They deleted forever
-// 3. (Still not working) (Working partly. Should not let '     ' todos to be added) Add logic for creating new todo. When you write something in top input and press 'enter' button - new todo should be added to your list and displayed. Make it to remove unneeded spaces first so texts like '        ' won't be added.
-// 4. (Still not working) Bug. When adding new todo if there was any active one they all becoming inactive. Fix it.
-// 5. (Still not working) Add logic for filtering buttons. Let them display proper set of todos respectively. Also make default one be active from beginning.
+// 1. Choose few todos -> filter todos by 'completed' -> press 'clear completed' -> you dropped back to 'active' todos. (Should stay at 'completed')
+// 2. Add logic for 'select all' button.
+// 3. Add logic for editing todos
+// 4. When you not on 'all' filter and creating new todo you shouldn't be dropped back to 'all'
+// 5. Complete all TODOs
+// 6. Check all changes and remove unneeded comments after that
